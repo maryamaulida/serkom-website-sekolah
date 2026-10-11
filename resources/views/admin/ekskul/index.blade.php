@@ -198,7 +198,7 @@
                                     <div class="d-flex justify-content-center gap-2">
 
                                         {{-- Detail --}}
-                                        <a href="{{ route('admin.ekskul.show', $ekskul->id) }}"
+                                        <a href="{{ route('admin.ekskul.show', $ekskul->id_ekskul) }}"
                                            class="btn btn-light border"
                                            title="Detail">
 
@@ -208,7 +208,7 @@
 
 
                                         {{-- Edit --}}
-                                        <a href="{{ route('admin.ekskul.edit', $ekskul->id) }}"
+                                        <a href="{{ route('admin.ekskul.edit', $ekskul->id_ekskul) }}"
                                            class="btn btn-warning"
                                            title="Edit">
 
@@ -218,7 +218,7 @@
 
 
                                         {{-- Hapus --}}
-                                        <form action="{{ route('admin.ekskul.destroy', $ekskul->id) }}"
+                                        <form action="{{ route('admin.ekskul.destroy', $ekskul->id_ekskul) }}"
                                               method="POST"
                                               onsubmit="return confirm('Yakin ingin menghapus data ekskul ini?')">
 

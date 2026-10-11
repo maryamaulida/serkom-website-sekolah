@@ -28,10 +28,22 @@ class LoginController extends Controller
         ];
 
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
 
-            return redirect()->route('admin.dashboard');
+        if (Auth::user()->status === 'Nonaktif') {
+
+            Auth::logout();
+
+            return back()
+                ->withInput($request->only('username'))
+                ->withErrors([
+                    'username' => 'Akun kamu sedang nonaktif. Silakan hubungi Admin.',
+                ]);
         }
+
+        $request->session()->regenerate();
+
+        return redirect()->route('admin.dashboard');
+    }
 
         return back()
             ->withInput($request->only('username'))

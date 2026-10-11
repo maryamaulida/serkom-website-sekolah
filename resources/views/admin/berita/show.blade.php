@@ -5,19 +5,19 @@
 <div class="container-fluid">
 
     {{-- Header --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
 
         <div>
 
             <a href="{{ route('admin.berita.index') }}"
-               class="text-muted text-decoration-none">
+               class="text-decoration-none text-muted d-inline-flex align-items-center mb-2">
 
                 <i class="ti ti-arrow-left me-1"></i>
-                Kembali ke Data Berita
+                Kembali ke Berita
 
             </a>
 
-            <h4 class="fw-semibold mt-3 mb-1">
+            <h4 class="fw-semibold mb-1">
                 Detail Berita
             </h4>
 
@@ -28,130 +28,10 @@
         </div>
 
 
-        <a href="{{ route('admin.berita.edit', ['berita' => $berita->id_berita]) }}"
-           class="btn btn-primary">
+        {{-- Tombol --}}
+        @if(Auth::user()->role === 'Admin')
 
-            <i class="ti ti-edit me-1"></i>
-            Edit Berita
-
-        </a>
-
-    </div>
-
-
-    {{-- Detail Berita --}}
-    <div class="card border-0 shadow-sm">
-
-        <div class="card-body p-4">
-
-            {{-- Gambar --}}
-            @if ($berita->gambar)
-
-                <img src="{{ asset('storage/' . $berita->gambar) }}"
-                     class="img-fluid rounded mb-4"
-                     alt="{{ $berita->judul }}"
-                     style="width: 100%; height: 350px; object-fit: cover;">
-
-            @else
-
-                <img src="{{ asset('assets/images/profile/user1.jpg') }}"
-                     class="img-fluid rounded mb-4"
-                     alt="Gambar Berita"
-                     style="width: 100%; height: 350px; object-fit: cover;">
-
-            @endif
-
-
-            {{-- Judul --}}
-            <h3 class="fw-semibold mb-3">
-                {{ $berita->judul }}
-            </h3>
-
-
-            {{-- Informasi --}}
-            <div class="d-flex flex-wrap gap-4 mb-4">
-
-                {{-- Tanggal --}}
-                <div>
-
-                    <small class="text-muted d-block mb-1">
-                        <i class="ti ti-calendar me-1"></i>
-                        Tanggal
-                    </small>
-
-                    <span class="fw-semibold">
-                        {{ \Carbon\Carbon::parse($berita->tanggal)->format('d M Y') }}
-                    </span>
-
-                </div>
-
-
-                {{-- Pembuat --}}
-                <div>
-
-                    <small class="text-muted d-block mb-1">
-                        <i class="ti ti-user me-1"></i>
-                        Dibuat oleh
-                    </small>
-
-                    <span class="fw-semibold">
-                        {{ $berita->user->name ?? '-' }}
-                    </span>
-
-                </div>
-
-
-                {{-- Status --}}
-                <div>
-
-                    <small class="text-muted d-block mb-1">
-                        Status
-                    </small>
-
-                    @if ($berita->status == 'Publish')
-
-                        <span class="badge bg-success">
-                            Publish
-                        </span>
-
-                    @else
-
-                        <span class="badge bg-secondary">
-                            Draft
-                        </span>
-
-                    @endif
-
-                </div>
-
-            </div>
-
-
-            <hr>
-
-
-            {{-- Isi Berita --}}
-            <div class="mt-4">
-
-                <h5 class="fw-semibold mb-3">
-                    Isi Berita
-                </h5>
-
-                <div class="text-muted"
-                     style="line-height: 1.8;">
-
-                    {!! nl2br(e($berita->isi)) !!}
-
-                </div>
-
-            </div>
-
-
-            <hr class="mt-4">
-
-
-            {{-- Button --}}
-            <div class="d-flex gap-2 mt-4">
+            <div class="d-flex gap-2">
 
                 <a href="{{ route('admin.berita.edit', $berita->id_berita) }}"
                    class="btn btn-primary">
@@ -164,7 +44,7 @@
 
                 <form action="{{ route('admin.berita.destroy', $berita->id_berita) }}"
                       method="POST"
-                      onsubmit="return confirm('Yakin ingin menghapus berita ini?')">
+                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus berita ini?')">
 
                     @csrf
                     @method('DELETE')
@@ -179,13 +59,198 @@
 
                 </form>
 
+            </div>
 
-                <a href="{{ route('admin.berita.index') }}"
-                   class="btn btn-light border">
+        @endif
 
-                    Kembali
+    </div>
 
-                </a>
+
+    {{-- Card --}}
+    <div class="card border-0 shadow-sm rounded-3">
+
+        <div class="card-body p-4">
+
+            <div class="row g-4 align-items-center">
+
+                {{-- Gambar --}}
+                <div class="col-lg-5">
+
+                    <div class="text-center">
+
+                        @if($berita->gambar)
+
+                            <img src="{{ asset('storage/' . $berita->gambar) }}"
+                                 alt="{{ $berita->judul }}"
+                                 class="img-fluid rounded-3"
+                                 style="
+                                    width: 100%;
+                                    max-width: 500px;
+                                    height: 300px;
+                                    object-fit: cover;
+                                 ">
+
+                        @else
+
+                            <img src="{{ asset('assets/images/profile/user1.jpg') }}"
+                                 alt="Default Image"
+                                 class="img-fluid rounded-3"
+                                 style="
+                                    width: 100%;
+                                    max-width: 500px;
+                                    height: 300px;
+                                    object-fit: cover;
+                                 ">
+
+                        @endif
+
+                    </div>
+
+                </div>
+
+
+                {{-- Informasi Berita --}}
+                <div class="col-lg-7">
+
+                    {{-- Status --}}
+                    <div class="mb-3">
+
+                        @if($berita->status == 'Publish')
+
+                            <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">
+
+                                <i class="ti ti-circle-check me-1"></i>
+                                Published
+
+                            </span>
+
+                        @else
+
+                            <span class="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill">
+
+                                <i class="ti ti-file-text me-1"></i>
+                                Draft
+
+                            </span>
+
+                        @endif
+
+                    </div>
+
+
+                    {{-- Judul --}}
+                    <h3 class="fw-semibold text-dark mb-4">
+
+                        {{ $berita->judul }}
+
+                    </h3>
+
+
+                    {{-- Tanggal --}}
+                    <div class="d-flex align-items-center mb-3">
+
+                        <div class="text-muted"
+                             style="width: 120px;">
+
+                            <i class="ti ti-calendar me-2"></i>
+                            Tanggal
+
+                        </div>
+
+                        <div>
+
+                            :
+                            {{ \Carbon\Carbon::parse($berita->tanggal)->translatedFormat('d F Y') }}
+
+                        </div>
+
+                    </div>
+
+
+                    {{-- Dibuat oleh --}}
+                    <div class="d-flex align-items-center mb-3">
+
+                        <div class="text-muted"
+                             style="width: 120px;">
+
+                            <i class="ti ti-user me-2"></i>
+                            Dibuat oleh
+
+                        </div>
+
+                        <div>
+
+                            :
+                            {{ $berita->user->name ?? 'Admin' }}
+
+                        </div>
+
+                    </div>
+
+
+                    {{-- Status --}}
+                    <div class="d-flex align-items-center mb-3">
+
+                        <div class="text-muted"
+                             style="width: 120px;">
+
+                            <i class="ti ti-check me-2"></i>
+                            Status
+
+                        </div>
+
+                        <div>
+
+                            :
+
+                            @if($berita->status == 'Publish')
+
+                                <span class="text-success fw-medium ms-1">
+                                    Publish
+                                </span>
+
+                            @else
+
+                                <span class="text-secondary fw-medium ms-1">
+                                    Draft
+                                </span>
+
+                            @endif
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {{-- Isi Berita --}}
+            <div class="border-top mt-4 pt-4">
+
+                <div class="p-4 rounded-3"
+                     style="background-color: #f8f9fa;">
+
+                    <h6 class="fw-semibold mb-3">
+
+                        <i class="ti ti-notes me-2"></i>
+                        Isi Berita
+
+                    </h6>
+
+                    <div class="text-secondary"
+                         style="
+                            line-height: 1.8;
+                            white-space: pre-line;
+                            text-align: justify;
+                         ">
+
+                        {!! e($berita->isi) !!}
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -195,4 +260,4 @@
 
 </div>
 
-@endsection
+@endsection 

@@ -71,7 +71,7 @@
 
         {{-- Form --}}
 
-        <form action="{{ route('admin.guru.update', $guru->id) }}"
+        <form action="{{ route('admin.guru.update', $guru->id_guru) }}"
         method="POST" enctype="multipart/form-data">
         @method('PUT')
         @csrf

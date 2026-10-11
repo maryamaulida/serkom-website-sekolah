@@ -1,28 +1,60 @@
 <!doctype html>
-
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>SMAN 2 TASIKMALAYA</title>
+    <title>{{ $profile->nama_sekolah }}</title>
 
     <link rel="shortcut icon"
           type="image/png"
-          href="{{ asset('assets/images/logos/smanda.png') }}"  />
+          href="{{ asset('storage/' .$profile->logo) }}">
 
     <link rel="stylesheet"
-          href="{{ asset('assets/css/styles.min.css') }}" />
+          href="{{ asset('assets/css/styles.min.css') }}">
 
+          <style>
+                @media (min-width: 1200px) {
+                    #headerCollapse {
+                        display: none !important;
+                    }
+
+
+                }
+                .content-area {
+                    margin-top: 0;
+                    position: relative;
+                    z-index: 1;
+                }
+                #headerCollapse {
+                    width: 38px;
+                    height: 38px;
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.2s ease;
+                }
+
+                #headerCollapse:hover {
+                    background-color: rgba(255, 255, 255, 0.15);
+                    transform: scale(1.05);
+                }
+
+                #headerCollapse:active {
+                    transform: scale(0.92);
+                }
+
+                #headerCollapse i {
+                    font-size: 22px;
+                }
+        </style>
 </head>
 
 <body>
 
     <!-- Body Wrapper -->
-
     <div class="page-wrapper"
          id="main-wrapper"
          data-layout="vertical"
@@ -31,36 +63,73 @@
          data-sidebar-position="fixed"
          data-header-position="fixed">
 
-
         <!-- App Topstrip -->
+        <div class="app-topstrip bg-dark py-3 px-3 w-100 d-flex align-items-center justify-content-between">
 
-        <div class="app-topstrip bg-dark py-6 px-3 w-100 d-lg-flex align-items-center justify-content-between">
+        {{-- Toggle Sidebar --}}
+        <a class="nav-link sidebartoggler nav-icon-hover text-white me-3"
+        href="javascript:void(0)"
+        id="headerCollapse">
+            <i class="ti ti-menu-2"></i>
+        </a>
 
-            <div class="d-flex align-items-center justify-content-center gap-5 mb-2 mb-lg-0">
+        @php
+            $profile = \App\Models\Profile::first();
+        @endphp
 
-                <div class="text-white p-2">
-                    SMAN 2 TASIKMALAYA
-                </div>
+        {{-- Logo --}}
+        <div class="ms-auto d-flex align-items-center">
+        <a href="{{ route('landing.index') }}" class="text-white d-flex align-items-center">
 
-            </div>
+        @if($profile && $profile->logo)
+            <img src="{{ asset('storage/' . $profile->logo) }}"
+                alt="Logo Sekolah"
+                width="34"
+                height="34"
+                class="me-2"
+                style="object-fit: contain;">
+        @else
+            <img src="{{ asset('assets/images/logos/smanda.png') }}"
+                alt="Logo Sekolah"
+                width="32"
+                height="32"
+                class="me-2"
+                style="object-fit: contain;">
+        @endif
+
+        {{-- Nama Sekolah --}}
+        <span class="text-white fw-semibold">
+            {{ $profile->nama_sekolah ?? 'SMAN 2 TASIKMALAYA' }}
+        </span>
 
         </div>
+        </a>
+    </div>
+        <!-- End App Topstrip -->
 
 
         <!-- Sidebar Start -->
-
         <aside class="left-sidebar">
 
             <!-- Sidebar scroll -->
-
             <div>
-
-                <!-- Logo -->
 
                 <div class="brand-logo d-flex align-items-center justify-content-between">
 
-                    <a href="{{ route('admin.dashboard') }}"
-                    class="text-nowrap logo-img d-flex align-items-center">
+
+                <a href="{{ route('landing.index') }}"
+                class="text-nowrap logo-img d-flex align-items-center">
+
+                    {{-- Logo Sekolah --}}
+                    @if($profile && $profile->logo)
+
+                        <img src="{{ asset('storage/' . $profile->logo) }}"
+                            alt="{{ $profile->nama_sekolah ?? 'Logo Sekolah' }}"
+                            width="45"
+                            height="45"
+                            style="object-fit: contain;">
+
+                    @else
 
                         <img src="{{ asset('assets/images/logos/smanda.png') }}"
                             alt="Logo"
@@ -68,22 +137,27 @@
                             height="45"
                             style="object-fit: contain;">
 
-                        <span class="fw-semibold ms-2 text-dark ">
-                            SMANDATAS OFFICIAL
-                        </span>
+                    @endif
 
-                    </a>
 
-                </div>
+                    {{-- Nama Sekolah --}}
+                    <span class="fw-semibold ms-2 text-dark">
+
+                        {{ $profile->nama_sekolah ?? 'SMAN 2 TASIKMALAYA' }}
+
+                    </span>
+
+                </a>
+
+            </div>
+                <!-- End Logo -->
 
 
                 <!-- Sidebar navigation -->
-
                 <nav class="sidebar-nav scroll-sidebar"
                      data-simplebar="">
 
                     <ul id="sidebarnav">
-
 
                         <!-- ================================= -->
                         <!-- SEKOLAH -->
@@ -104,7 +178,6 @@
 
 
                         <!-- Dashboard -->
-
                         <li class="sidebar-item">
 
                             <a class="sidebar-link primary-hover-bg justify-content-between"
@@ -114,11 +187,9 @@
                                 <div class="d-flex align-items-center gap-6">
 
                                     <span class="d-flex">
-
                                         <iconify-icon
                                             icon="solar:widget-2-line-duotone">
                                         </iconify-icon>
-
                                     </span>
 
                                     <span class="hide-menu">
@@ -133,7 +204,6 @@
 
 
                         <!-- Profile Sekolah -->
-
                         <li class="sidebar-item">
 
                             <a class="sidebar-link primary-hover-bg justify-content-between"
@@ -143,11 +213,9 @@
                                 <div class="d-flex align-items-center gap-6">
 
                                     <span class="d-flex">
-
                                         <iconify-icon
                                             icon="solar:buildings-2-line-duotone">
                                         </iconify-icon>
-
                                     </span>
 
                                     <span class="hide-menu">
@@ -162,7 +230,6 @@
 
 
                         <!-- Prestasi -->
-
                         <li class="sidebar-item">
 
                             <a class="sidebar-link primary-hover-bg justify-content-between"
@@ -172,11 +239,9 @@
                                 <div class="d-flex align-items-center gap-6">
 
                                     <span class="d-flex">
-
                                         <iconify-icon
                                             icon="solar:cup-star-line-duotone">
                                         </iconify-icon>
-
                                     </span>
 
                                     <span class="hide-menu">
@@ -209,7 +274,6 @@
 
 
                         <!-- Guru -->
-
                         <li class="sidebar-item">
 
                             <a class="sidebar-link primary-hover-bg justify-content-between"
@@ -219,11 +283,9 @@
                                 <div class="d-flex align-items-center gap-6">
 
                                     <span class="d-flex">
-
                                         <iconify-icon
                                             icon="solar:users-group-rounded-line-duotone">
                                         </iconify-icon>
-
                                     </span>
 
                                     <span class="hide-menu">
@@ -238,7 +300,6 @@
 
 
                         <!-- Siswa -->
-
                         <li class="sidebar-item">
 
                             <a class="sidebar-link primary-hover-bg justify-content-between"
@@ -248,11 +309,9 @@
                                 <div class="d-flex align-items-center gap-6">
 
                                     <span class="d-flex">
-
                                         <iconify-icon
                                             icon="solar:backpack-line-duotone">
                                         </iconify-icon>
-
                                     </span>
 
                                     <span class="hide-menu">
@@ -285,7 +344,6 @@
 
 
                         <!-- Ekstrakurikuler -->
-
                         <li class="sidebar-item">
 
                             <a class="sidebar-link primary-hover-bg justify-content-between"
@@ -295,11 +353,9 @@
                                 <div class="d-flex align-items-center gap-6">
 
                                     <span class="d-flex">
-
                                         <iconify-icon
                                             icon="solar:football-line-duotone">
                                         </iconify-icon>
-
                                     </span>
 
                                     <span class="hide-menu">
@@ -314,7 +370,6 @@
 
 
                         <!-- Pengumuman -->
-
                         <li class="sidebar-item">
 
                             <a class="sidebar-link primary-hover-bg justify-content-between"
@@ -324,11 +379,9 @@
                                 <div class="d-flex align-items-center gap-6">
 
                                     <span class="d-flex">
-
                                         <iconify-icon
                                             icon="solar:bell-bing-line-duotone">
                                         </iconify-icon>
-
                                     </span>
 
                                     <span class="hide-menu">
@@ -361,7 +414,6 @@
 
 
                         <!-- Berita -->
-
                         <li class="sidebar-item">
 
                             <a class="sidebar-link primary-hover-bg justify-content-between"
@@ -371,11 +423,9 @@
                                 <div class="d-flex align-items-center gap-6">
 
                                     <span class="d-flex">
-
                                         <iconify-icon
                                             icon="solar:document-text-line-duotone">
                                         </iconify-icon>
-
                                     </span>
 
                                     <span class="hide-menu">
@@ -390,7 +440,6 @@
 
 
                         <!-- Galeri -->
-
                         <li class="sidebar-item">
 
                             <a class="sidebar-link primary-hover-bg justify-content-between"
@@ -400,11 +449,9 @@
                                 <div class="d-flex align-items-center gap-6">
 
                                     <span class="d-flex">
-
                                         <iconify-icon
                                             icon="solar:gallery-wide-line-duotone">
                                         </iconify-icon>
-
                                     </span>
 
                                     <span class="hide-menu">
@@ -423,87 +470,84 @@
                         <!-- ================================= -->
 
                         @if(Auth::user()->role === 'Admin')
-                        <li class="nav-small-cap mt-3">
 
-                            <iconify-icon
-                                icon="solar:settings-line-duotone"
-                                class="nav-small-cap-icon fs-4">
-                            </iconify-icon>
+                            <li class="nav-small-cap mt-3">
 
-                            <span class="hide-menu">
-                                MANAJEMEN
-                            </span>
+                                <iconify-icon
+                                    icon="solar:settings-line-duotone"
+                                    class="nav-small-cap-icon fs-4">
+                                </iconify-icon>
 
-                        </li>
+                                <span class="hide-menu">
+                                    MANAJEMEN
+                                </span>
+
+                            </li>
 
 
-                        <!-- User -->
-                        <li class="sidebar-item">
+                            <!-- User -->
+                            <li class="sidebar-item">
 
-                            <a class="sidebar-link primary-hover-bg justify-content-between"
-                               href="{{ route('admin.user.index') }}"
-                               aria-expanded="false">
-                                <div class="d-flex align-items-center gap-6">
+                                <a class="sidebar-link primary-hover-bg justify-content-between"
+                                   href="{{ route('admin.user.index') }}"
+                                   aria-expanded="false">
 
-                                    <span class="d-flex">
+                                    <div class="d-flex align-items-center gap-6">
 
-                                        <iconify-icon
-                                            icon="solar:shield-user-line-duotone">
-                                        </iconify-icon>
+                                        <span class="d-flex">
+                                            <iconify-icon
+                                                icon="solar:shield-user-line-duotone">
+                                            </iconify-icon>
+                                        </span>
 
-                                    </span>
+                                        <span class="hide-menu">
+                                            User
+                                        </span>
 
-                                    <span class="hide-menu">
-                                        User
-                                    </span>
+                                    </div>
 
-                                </div>
+                                </a>
 
-                            </a>
+                            </li>
 
-                        </li>
                         @endif
-
 
                     </ul>
 
                 </nav>
-
                 <!-- End Sidebar navigation -->
 
             </div>
-
             <!-- End Sidebar scroll -->
 
         </aside>
-
         <!-- Sidebar End -->
 
 
         <!-- Main wrapper -->
-
         <div class="body-wrapper">
 
             <div class="body-wrapper-inner">
 
-                <div class="container-fluid">
+                <div class="container-fluid ">
 
 
                     <!-- Header Start -->
-
                     <header class="app-header">
 
                         <nav class="navbar navbar-expand-lg navbar-light">
 
+
+
+
                             <div class="navbar-collapse justify-content-end px-0">
 
-                                <div class="text-black p-2">
 
-                                    <div class="text-black p-2">
 
-                                    Selamat datang, {{ Auth::user()->name ?? 'User' }} 👋
+                                <div class="text-black p-2 ">
 
-                                </div>
+                                    Selamat datang,
+                                    {{ Auth::user()->name ?? 'User' }} 👋
 
                                 </div>
 
@@ -513,13 +557,13 @@
                                     <li class="nav-item dropdown">
 
                                         <a class="nav-link"
-                                        href="javascript:void(0)"
-                                        id="drop2"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false">
+                                           href="javascript:void(0)"
+                                           id="drop2"
+                                           data-bs-toggle="dropdown"
+                                           aria-expanded="false">
 
                                             <div class="rounded-circle bg-light-primary d-flex align-items-center justify-content-center"
-                                                style="width: 35px; height: 35px;">
+                                                 style="width: 35px; height: 35px;">
 
                                                 <i class="ti ti-user text-primary"></i>
 
@@ -529,13 +573,14 @@
 
 
                                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
-                                            aria-labelledby="drop2">
+                                             aria-labelledby="drop2">
 
                                             <div class="message-body">
 
-                                                {{-- My Profile --}}
-                                               <a href="{{ route('my-profile') }}"
-                                                    class="d-flex align-items-center gap-2 dropdown-item">
+
+                                                <!-- My Profile -->
+                                                <a href="{{ route('my-profile') }}"
+                                                   class="d-flex align-items-center gap-2 dropdown-item">
 
                                                     <i class="ti ti-user fs-6"></i>
 
@@ -546,10 +591,10 @@
                                                 </a>
 
 
-                                                {{-- Logout --}}
+                                                <!-- Logout -->
                                                 <form action="{{ route('logout') }}"
-                                                    method="POST"
-                                                    onsubmit="return confirm('Yakin ingin logout?')">
+                                                      method="POST"
+                                                      onsubmit="return confirm('Yakin ingin logout?')">
 
                                                     @csrf
 
@@ -579,40 +624,28 @@
                         </nav>
 
                     </header>
-
                     <!-- Header End -->
 
 
-                    @yield('content')
+                    <!-- Content -->
+                    <div class="content-area">
+                        @yield('content')
+                    </div>
+                    <!-- End Content -->
 
 
                     <!-- Footer -->
-
                     <div class="py-6 px-6 text-center">
 
                         <p class="mb-0 fs-4">
 
-                            Design and Developed by
-
-                            <a href="https://www.wrappixel.com/"
-                               target="_blank"
-                               class="pe-1 text-primary text-decoration-underline">
-
-                                wrappixel.com
-
-                            </a>
-
-                            Distributed by
-
-                            <a href="https://themewagon.com/">
-
-                                ThemeWagon
-
-                            </a>
+                            &copy; 2026 {{ $profile->nama_sekolah }}.
+                            Hak Cipta Dilindungi Undang-Undang.
 
                         </p>
 
                     </div>
+                    <!-- End Footer -->
 
 
                 </div>
@@ -620,8 +653,11 @@
             </div>
 
         </div>
+        <!-- End Main wrapper -->
+
 
     </div>
+    <!-- End Body Wrapper -->
 
 
     <!-- Scripts -->

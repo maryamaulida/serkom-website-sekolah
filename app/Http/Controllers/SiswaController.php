@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Siswa;
 use Illuminate\Http\Request;
+use App\Imports\SiswaImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
 {
@@ -23,7 +25,7 @@ class SiswaController extends Controller
     {
         $request->validate([
             'nama' => 'required|string',
-            'nisn' => 'required|string',
+            'nisn' => 'required|string|unique:siswa,nisn',
             'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
             'tahun_masuk' => 'required|numeric',
             'foto' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048',
@@ -48,6 +50,20 @@ class SiswaController extends Controller
             ->with('success', 'Data Berhasil Ditambahkan');
     }
 
+        // IMPORT DATA SISWA DARI EXCEL
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,xls,csv|max:2048',
+        ]);
+
+        Excel::import(new SiswaImport, $request->file('file'));
+
+        return redirect()
+            ->route('admin.siswa.index')
+            ->with('success', 'Data siswa berhasil diimport!');
+    }
+
     public function show(Siswa $siswa)
     {
         return view('admin.siswa.show', compact('siswa'));
@@ -62,7 +78,7 @@ class SiswaController extends Controller
     {
         $request->validate([
             'nama' => 'required|string',
-            'nisn' => 'required|string',
+            'nisn' => 'required|string|unique:siswa,nisn,' . $siswa->id_siswa . ',id_siswa',
             'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
             'tahun_masuk' => 'required|numeric',
             'foto' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048',

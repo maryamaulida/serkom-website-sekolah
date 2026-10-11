@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LandingController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -32,10 +33,30 @@ Route::post('/logout', [LoginController::class, 'logout'])
 // HALAMAN AWAL
 // ==================================================
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+Route::get('/', [LandingController::class, 'index'])
+    ->name('landing.index');
 
+Route::get('/profile-sekolah', [LandingController::class, 'profile'])->name('landing.profile');
+
+// BERITA
+Route::get('berita-sekolah', [LandingController::class, 'berita'])->name('landing.berita.index');
+Route::get('/berita/{slug}', [LandingController::class, 'beritaDetail'])->name('landing.berita.detail');
+
+// GURU
+Route::get('guru-sekolah', [LandingController::class, 'guru'])->name('landing.guru.index');
+Route::get('/guru/{id}', [LandingController::class, 'guruDetail'])->name('landing.guru.detail');
+
+Route::get('prestasi-sekolah', [LandingController::class, 'prestasi'])->name('landing.prestasi.index');
+Route::get('/prestasi{id}', [LandingController::class, 'detailPrestasi'])->name('landing.prestasi.detail');
+
+Route::get('galeri-sekolah', [LandingController::class, 'galeri'])->name('landing.galeri.index');
+Route::get('/galeri{id}', [LandingController::class, 'detailGaleri'])->name('landing.galeri.detail');
+
+Route::get('pengumuman-sekolah', [LandingController::class, 'pengumuman'])->name('landing.pengumuman.index');
+Route::get('/pengumuman{id}', [LandingController::class, 'detailPengumuman'])->name('landing.pengumuman.detail');
+
+Route::get('eskul-sekolah', [LandingController::class, 'eskul'])->name('landing.eskul.index');
+Route::get('/eskul/{id}', [LandingController::class, 'detailEskul'])->name('landing.eskul.detail');
 
 // ==================================================
 // MY PROFILE
@@ -144,6 +165,11 @@ Route::post('/siswa', [SiswaController::class, 'store'])
     ->middleware(['auth.custom', 'role:Admin'])
     ->name('admin.siswa.store');
 
+// Admin - import siswa dari Excel
+Route::post('/siswa/import', [SiswaController::class, 'import'])
+    ->middleware(['auth.custom', 'role:Admin'])
+    ->name('admin.siswa.import');
+
 // Admin & Operator - lihat detail siswa
 Route::get('/siswa/{siswa}', [SiswaController::class, 'show'])
     ->middleware(['auth.custom', 'role:Admin,Operator'])
@@ -179,6 +205,10 @@ Route::resource('user', UserController::class)
         'auth.custom',
         'role:Admin',
     ]);
+
+Route::patch('/user/{user}/toggle-status', [UserController::class, 'toggleStatus'])
+    ->middleware(['auth.custom', 'role:Admin'])
+    ->name('admin.user.toggle-status');
 
 
 // ==================================================

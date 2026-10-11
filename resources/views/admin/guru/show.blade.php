@@ -2,153 +2,165 @@
 
 @section('content')
 
+<style>
+    .guru-cover {
+        height: 110px;
+        background: linear-gradient(135deg, #0085db 0%, #46caeb 100%);
+    }
+    .guru-photo {
+        width: 190px;
+        height: 230px;
+        object-fit: cover;
+        border: 5px solid #fff;
+        box-shadow: 0 6px 18px rgba(17, 28, 45, 0.15);
+        margin-top: -70px;
+    }
+    .guru-info-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 14px;
+        height: 100%;
+        transition: box-shadow .2s ease, border-color .2s ease;
+    }
+    .guru-info-item:hover {
+        border-color: #0085db;
+        box-shadow: 0 4px 14px rgba(0, 133, 219, 0.12);
+    }
+    .guru-info-icon {
+        width: 46px;
+        height: 46px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-size: 22px;
+    }
+</style>
+
 <div class="container-fluid">
 
     {{-- Header --}}
     <div class="mb-4">
 
         <a href="{{ route('admin.guru.index') }}"
-           class="text-muted text-decoration-none">
+           class="text-muted text-decoration-none d-inline-flex align-items-center">
             <i class="ti ti-arrow-left me-1"></i>
             Kembali ke Data Guru
         </a>
 
-        <div class="d-flex justify-content-between align-items-center mt-3">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mt-3">
 
             <div>
-                <h4 class="fw-semibold mb-1">
-                    Detail Guru
-                </h4>
-
-                <p class="text-muted mb-0">
-                    Informasi lengkap data guru.
-                </p>
+                <h4 class="fw-semibold mb-1">Detail Guru</h4>
+                <p class="text-muted mb-0">Informasi lengkap data guru.</p>
             </div>
 
-            <div class="d-flex gap-2">
+            @if(Auth::user()->role === 'Admin')
+                <div class="d-flex gap-2">
 
-                {{-- Edit --}}
-                @if(Auth::user()->role === 'Admin')
-                <a href="{{ route('admin.guru.edit', $guru->id) }}"
-                   class="btn btn-light border">
-                    <i class="ti ti-edit me-1"></i>
-                    Edit
-                </a>
+                    <a href="{{ route('admin.guru.edit', $guru->id_guru) }}"
+                       class="btn btn-light border d-inline-flex align-items-center">
+                        <i class="ti ti-edit me-1"></i>
+                        Edit
+                    </a>
 
-                {{-- Hapus --}}
+                    <form action="{{ route('admin.guru.destroy', $guru->id_guru) }}"
+                          method="POST"
+                          onsubmit="return confirm('Yakin ingin menghapus data guru ini?')">
+                        @csrf
+                        @method('DELETE')
 
-                <form action="{{ route('admin.guru.destroy', $guru->id) }}"
-                      method="POST"
-                      onsubmit="return confirm('Yakin ingin menghapus data guru ini?')">
+                        <button type="submit"
+                                class="btn btn-outline-danger d-inline-flex align-items-center">
+                            <i class="ti ti-trash me-1"></i>
+                            Hapus
+                        </button>
+                    </form>
 
-                    @csrf
-                    @method('DELETE')
+                </div>
+            @endif
 
-                    <button type="submit" class="btn btn-danger">
-                        <i class="ti ti-trash me-1"></i>
-                        Hapus
-                    </button>
-
-                </form>
-                @endif
-
-            </div>
         </div>
     </div>
 
 
     {{-- Detail --}}
-    <div class="card border-0 shadow-sm">
+    <div class="card border-0 shadow-sm overflow-hidden">
 
-        <div class="card-body p-4">
+        {{-- Cover --}}
+        <div class="guru-cover"></div>
 
-            <div class="row g-4 align-items-center">
+        <div class="card-body px-4 pb-4 pt-0">
+            <div class="row g-4">
 
                 {{-- Foto --}}
-                <div class="col-lg-4 text-center">
-
-                    @if ($guru->foto)
-
-                        <img src="{{ asset('storage/' . $guru->foto) }}"
-                             class="rounded-3"
-                             style="width: 260px; height: 300px; object-fit: cover;"
-                             alt="Foto {{ $guru->nama_guru }}">
-
-                    @else
-
-                        <img src="{{ asset('assets/images/profile/user1.jpg') }}"
-                             class="rounded-3"
-                             style="width: 260px; height: 300px; object-fit: cover;"
-                             alt="Foto Guru">
-
-                    @endif
-
+                <div class="col-lg-3 text-center">
+                    <img src="{{ $guru->foto ? asset('storage/' . $guru->foto) : asset('assets/images/profile/user1.jpg') }}"
+                         class="guru-photo rounded-4"
+                         alt="Foto {{ $guru->nama_guru }}">
                 </div>
 
-
                 {{-- Informasi --}}
-                <div class="col-lg-8">
+                <div class="col-lg-9 pt-lg-3">
 
-                    <h3 class="fw-semibold mb-1">
-                        {{ $guru->nama_guru }}
-                    </h3>
+                    {{-- Nama --}}
+                    <div class="d-flex align-items-center flex-wrap gap-2 mb-1">
+                        <h3 class="fw-semibold mb-0">{{ $guru->nama_guru }}</h3>
+                        <span class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2">
+                            {{ $guru->jabatan }}
+                        </span>
+                    </div>
 
-                    <p class="text-muted mb-4">
-                        {{ $guru->mapel }}
-                    </p>
+                    <p class="text-muted mb-4">Guru {{ $guru->mapel }}</p>
 
+                    {{-- Info --}}
+                    <div class="row g-3">
 
-                    <div class="row g-4">
-
-                        {{-- NIP --}}
                         <div class="col-md-6">
-
-                            <div class="text-muted small mb-1">
-                                NIP
+                            <div class="guru-info-item">
+                                <div class="guru-info-icon bg-light-primary text-primary">
+                                    <i class="ti ti-id"></i>
+                                </div>
+                                <div>
+                                    <div class="text-muted small">NIP</div>
+                                    <div class="fw-semibold text-dark">{{ $guru->nip ?? '-' }}</div>
+                                </div>
                             </div>
-
-                            <div class="fw-semibold">
-                                {{ $guru->nip ?? '-' }}
-                            </div>
-
                         </div>
 
-
-                        {{-- Mata Pelajaran --}}
                         <div class="col-md-6">
-
-                            <div class="text-muted small mb-1">
-                                Mata Pelajaran
+                            <div class="guru-info-item">
+                                <div class="guru-info-icon bg-light-success text-success">
+                                    <i class="ti ti-book"></i>
+                                </div>
+                                <div>
+                                    <div class="text-muted small">Mata Pelajaran</div>
+                                    <div class="fw-semibold text-dark">{{ $guru->mapel }}</div>
+                                </div>
                             </div>
-
-                            <div class="fw-semibold">
-                                {{ $guru->mapel }}
-                            </div>
-
                         </div>
 
-
-                        {{-- Jabatan --}}
                         <div class="col-md-6">
-
-                            <div class="text-muted small mb-1">
-                                Jabatan
+                            <div class="guru-info-item">
+                                <div class="guru-info-icon bg-light-warning text-warning">
+                                    <i class="ti ti-briefcase"></i>
+                                </div>
+                                <div>
+                                    <div class="text-muted small">Jabatan</div>
+                                    <div class="fw-semibold text-dark">{{ $guru->jabatan }}</div>
+                                </div>
                             </div>
-
-                            <span class="badge bg-primary-subtle text-primary">
-                                {{ $guru->jabatan }}
-                            </span>
-
                         </div>
 
                     </div>
-
                 </div>
 
             </div>
-
         </div>
-
     </div>
 
 </div>

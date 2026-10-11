@@ -36,7 +36,7 @@
                     </p>
 
 
-                    <form action="{{ route('admin.galeri.update', $galeri->id) }}"
+                    <form action="{{ route('admin.galeri.update', $galeri->id_galeri) }}"
                         method="POST"
                         enctype="multipart/form-data">
 

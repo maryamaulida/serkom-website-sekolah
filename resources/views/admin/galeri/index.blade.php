@@ -258,7 +258,7 @@
                                     <div class="d-flex justify-content-center gap-2">
 
                                         {{-- Detail --}}
-                                        <a href="{{ route('admin.galeri.show', $galeri->id) }}"
+                                        <a href="{{ route('admin.galeri.show', $galeri->id_galeri) }}"
                                            class="btn btn-light border"
                                            title="Detail">
 
@@ -268,7 +268,7 @@
 
 
                                         {{-- Edit --}}
-                                        <a href="{{ route('admin.galeri.edit', $galeri->id) }}"
+                                        <a href="{{ route('admin.galeri.edit', $galeri->id_galeri) }}"
                                            class="btn btn-warning"
                                            title="Edit">
 
@@ -278,7 +278,7 @@
 
 
                                         {{-- Hapus --}}
-                                        <form action="{{ route('admin.galeri.destroy', $galeri->id) }}"
+                                        <form action="{{ route('admin.galeri.destroy', $galeri->id_galeri) }}"
                                               method="POST"
                                               onsubmit="return confirm('Yakin ingin menghapus galeri ini?')">
 

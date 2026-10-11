@@ -264,7 +264,7 @@
                                     <div class="d-flex justify-content-center gap-2">
 
                                         {{-- Detail --}}
-                                        <a href="{{ route('admin.guru.show', $guru->id) }}"
+                                        <a href="{{ route('admin.guru.show', $guru->id_guru ) }}"
                                            class="btn btn-light border"
                                            title="Detail">
 
@@ -275,7 +275,7 @@
 
                                         {{-- Edit --}}
                                         @if(Auth::user()->role === 'Admin')
-                                        <a href="{{ route('admin.guru.edit', $guru->id) }}"
+                                        <a href="{{ route('admin.guru.edit', $guru->id_guru) }}"
                                            class="btn btn-warning"
                                            title="Edit">
 
@@ -287,7 +287,7 @@
 
                                         {{-- Hapus --}}
 
-                                        <form action="{{ route('admin.guru.destroy', $guru->id) }}"
+                                        <form action="{{ route('admin.guru.destroy', $guru->id_guru) }}"
                                               method="POST"
                                               onsubmit="return confirm('Yakin ingin menghapus data guru ini?')">
 

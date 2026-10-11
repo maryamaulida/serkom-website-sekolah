@@ -5,17 +5,19 @@
 <div class="container-fluid">
 
     {{-- Header --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
 
         <div>
 
             <a href="{{ route('admin.ekskul.index') }}"
-               class="text-muted text-decoration-none">
+               class="text-muted text-decoration-none d-inline-flex align-items-center mb-2">
+
                 <i class="ti ti-arrow-left me-1"></i>
-                Kembali ke Data Ekskul
+                Kembali ke Ekskul
+
             </a>
 
-            <h4 class="fw-semibold mt-3 mb-1">
+            <h4 class="fw-semibold mb-1">
                 Detail Ekstrakurikuler
             </h4>
 
@@ -26,38 +28,75 @@
         </div>
 
 
-        <a href="{{ route('admin.ekskul.edit', $ekskul->id) }}"
-           class="btn btn-primary">
-            <i class="ti ti-edit me-1"></i>
-            Edit Ekskul
-        </a>
+        {{-- Tombol --}}
+        @if(Auth::user()->role === 'Admin')
+
+            <div class="d-flex gap-2">
+
+                <a href="{{ route('admin.ekskul.edit', $ekskul->id_ekskul) }}"
+                   class="btn btn-primary">
+
+                    <i class="ti ti-edit me-1"></i>
+                    Edit
+
+                </a>
+
+
+                <form action="{{ route('admin.ekskul.destroy', $ekskul->id_ekskul) }}"
+                      method="POST"
+                      onsubmit="return confirm('Yakin ingin menghapus data ekskul ini?')">
+
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit"
+                            class="btn btn-danger">
+
+                        <i class="ti ti-trash me-1"></i>
+                        Hapus
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        @endif
 
     </div>
 
 
     {{-- Detail --}}
-    <div class="card border-0 shadow-sm">
+    <div class="card border-0 shadow-sm rounded-3">
 
         <div class="card-body p-4">
 
-            <div class="row g-4">
+            <div class="row g-4 align-items-center">
 
                 {{-- Gambar --}}
                 <div class="col-lg-5">
 
-                    @if ($ekskul->gambar)
+                    @if($ekskul->gambar)
 
                         <img src="{{ asset('storage/' . $ekskul->gambar) }}"
-                             class="img-fluid rounded"
+                             class="img-fluid rounded-3"
                              alt="{{ $ekskul->nama_eskul }}"
-                             style="width: 100%; height: 300px; object-fit: cover;">
+                             style="
+                                width: 100%;
+                                height: 300px;
+                                object-fit: cover;
+                             ">
 
                     @else
 
                         <img src="{{ asset('assets/images/profile/user1.jpg') }}"
-                             class="img-fluid rounded"
+                             class="img-fluid rounded-3"
                              alt="Gambar Ekskul"
-                             style="width: 100%; height: 300px; object-fit: cover;">
+                             style="
+                                width: 100%;
+                                height: 300px;
+                                object-fit: cover;
+                             ">
 
                     @endif
 
@@ -67,94 +106,75 @@
                 {{-- Informasi --}}
                 <div class="col-lg-7">
 
+                    {{-- Nama Ekskul --}}
                     <h3 class="fw-semibold mb-4">
                         {{ $ekskul->nama_eskul }}
                     </h3>
 
 
                     {{-- Pembina --}}
-                    <div class="mb-4">
+                    <div class="d-flex align-items-center mb-3">
 
-                        <small class="text-muted d-block mb-1">
-                            <i class="ti ti-user me-1"></i>
+                        <div class="text-muted"
+                             style="width: 140px;">
+
+                            <i class="ti ti-user me-2"></i>
                             Nama Pembina
-                        </small>
 
-                        <h6 class="mb-0">
+                        </div>
+
+                        <div>
+                            :
                             {{ $ekskul->nama_pembina }}
-                        </h6>
+                        </div>
 
                     </div>
 
 
                     {{-- Jadwal --}}
-                    <div class="mb-4">
+                    <div class="d-flex align-items-center mb-3">
 
-                        <small class="text-muted d-block mb-1">
-                            <i class="ti ti-calendar me-1"></i>
+                        <div class="text-muted"
+                             style="width: 140px;">
+
+                            <i class="ti ti-calendar me-2"></i>
                             Jadwal Latihan
-                        </small>
 
-                        <h6 class="mb-0">
+                        </div>
+
+                        <div>
+                            :
                             {{ $ekskul->jadwal_latihan }}
-                        </h6>
+                        </div>
 
                     </div>
 
+                </div>
 
-                    {{-- Deskripsi --}}
-                    <div class="mb-4">
-
-                        <small class="text-muted d-block mb-2">
-                            Deskripsi
-                        </small>
-
-                        <p class="text-muted mb-0">
-                            {{ $ekskul->deskripsi }}
-                        </p>
-
-                    </div>
+            </div>
 
 
-                    <hr>
+            {{-- Deskripsi --}}
+            <div class="border-top mt-4 pt-4">
 
+                <div class="p-4 rounded-3"
+                     style="background-color: #f8f9fa;">
 
-                    {{-- Button --}}
-                    <div class="d-flex gap-2 mt-4">
+                    <h6 class="fw-semibold mb-3">
 
-                        <a href="{{ route('admin.ekskul.edit', $ekskul->id) }}"
-                           class="btn btn-primary">
+                        <i class="ti ti-notes me-2"></i>
+                        Deskripsi
 
-                            <i class="ti ti-edit me-1"></i>
-                            Edit
+                    </h6>
 
-                        </a>
+                    <div class="text-secondary"
+                         style="
+                            line-height: 1.8;
+                            white-space: pre-line;
+                            text-align: justify;
+                         ">
 
-
-                        <form action="{{ route('admin.ekskul.destroy', $ekskul->id) }}"
-                              method="POST"
-                              onsubmit="return confirm('Yakin ingin menghapus data ekskul ini?')">
-
-                            @csrf
-                            @method('DELETE')
-
-                            <button type="submit"
-                                    class="btn btn-danger">
-
-                                <i class="ti ti-trash me-1"></i>
-                                Hapus
-
-                            </button>
-
-                        </form>
-
-
-                        <a href="{{ route('admin.ekskul.index') }}"
-                           class="btn btn-light border">
-
-                            Kembali
-
-                        </a>
+                        {{ $ekskul->deskripsi ?: '-' }}
 
                     </div>
 

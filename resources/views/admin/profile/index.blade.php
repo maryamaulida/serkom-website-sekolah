@@ -166,7 +166,7 @@
                                     </small>
 
                                     <h6 class="fw-semibold mb-0">
-                                        {{ $item->kepala_sekolah }}
+                                        {{ $item->kepala_Sekolah }}
                                     </h6>
 
                                 </div>

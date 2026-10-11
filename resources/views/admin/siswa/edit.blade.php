@@ -75,7 +75,7 @@
 
                 <div class="card-body p-4">
 
-                    <form action="{{ route('admin.siswa.update', $siswa->id) }}"
+                    <form action="{{ route('admin.siswa.update', $siswa->id_siswa) }}"
                           method="POST"
                           enctype="multipart/form-data">
 

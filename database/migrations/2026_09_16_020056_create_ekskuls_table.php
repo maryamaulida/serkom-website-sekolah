@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ekskuls', function (Blueprint $table) {
-            $table->id();
+        Schema::create('ekskul', function (Blueprint $table) {
+            $table->uuid('id_ekskul')->primary();
             $table->string('nama_eskul');
             $table->string('nama_pembina');
             $table->string('jadwal_latihan');
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ekskuls');
+        Schema::dropIfExists('ekskul');
     }
 };

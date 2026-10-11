@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Berita;
+use App\Models\Pengumuman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::withCount(['berita', 'pengumuman'])->get();
 
         return view('admin.user.index', compact('users'));
     }
@@ -36,6 +38,7 @@ class UserController extends Controller
             'username' => $request->username,
             'password' => $request->password,
             'role' => $request->role,
+            'status' => 'Aktif',
         ]);
 
         return redirect()
@@ -88,10 +91,63 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        $adaBerita = Berita::where('id_user', $user->id_user)->exists();
+
+        $adaPengumuman = Pengumuman::where('id_user', $user->id_user)->exists();
+
+        if ($adaBerita || $adaPengumuman) {
+            return redirect()
+                ->route('admin.user.index')
+                ->with('error', 'User tidak dapat dihapus karena sudah memiliki data.');
+        }
+
         $user->delete();
 
         return redirect()
             ->route('admin.user.index')
-            ->with('success', 'User berhasil dihapus');
+            ->with('success', 'User berhasil dihapus.');
+    }
+
+    public function toggleStatus(User $user)
+    {
+        // Kalau user sedang login menonaktifkan akunnya sendiri
+        if ($user->id_user === Auth::user()->id_user && $user->status === 'Aktif') {
+
+            $user->update([
+                'status' => 'Nonaktif'
+            ]);
+
+            Auth::logout();
+
+            request()->session()->invalidate();
+            request()->session()->regenerateToken();
+
+            return redirect()
+                ->route('login')
+                ->withErrors([
+                    'username' => 'Akun kamu telah dinonaktifkan.',
+                ]);
+        }
+
+        // Kalau menonaktifkan user lain
+        if ($user->status === 'Aktif') {
+
+            $user->update([
+                'status' => 'Nonaktif'
+            ]);
+
+            return redirect()
+                ->route('admin.user.index')
+                ->with('success', 'User berhasil dinonaktifkan.');
+        }
+
+        // Kalau mengaktifkan user
+        $user->update([
+            'status' => 'Aktif'
+        ]);
+
+        return redirect()
+            ->route('admin.user.index')
+            ->with('success', 'User berhasil diaktifkan.');
     }
 }

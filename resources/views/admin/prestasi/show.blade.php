@@ -29,7 +29,7 @@
 
         <div class="d-flex gap-2">
 
-            <a href="{{ route('admin.prestasi.edit', $prestasi->id) }}"
+            <a href="{{ route('admin.prestasi.edit', $prestasi->id_prestasi) }}"
                class="btn btn-warning">
 
                 <i class="ti ti-edit me-1"></i>
@@ -37,7 +37,7 @@
 
             </a>
 
-            <form action="{{ route('admin.prestasi.destroy', $prestasi->id) }}"
+            <form action="{{ route('admin.prestasi.destroy', $prestasi->id_prestasi) }}"
                   method="POST"
                   onsubmit="return confirm('Yakin ingin menghapus prestasi ini?')">
 

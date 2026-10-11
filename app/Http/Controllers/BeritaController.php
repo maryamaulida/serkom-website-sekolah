@@ -22,6 +22,8 @@ class BeritaController extends Controller
 
     public function store(Request $request)
     {
+        $slug = Str::slug($request->judul);
+        $request->merge(['slug' => $slug]);
         $request->validate([
             'judul' => 'required|string',
             'isi' => 'required',
@@ -29,6 +31,17 @@ class BeritaController extends Controller
             'gambar' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048',
             'status' => 'required|in:Publish,Draft',
             'id_user' => 'required',
+            'slug' => 'required|unique:berita,slug'
+        ],[
+            'judul.required' => 'Judul berita harus diisi.',
+            'judul.max' => 'Judul berita tidak boleh lebih dari 50 karakter.',
+            'isi.required' => 'Isi berita harus diisi.',
+            'tanggal.required' => 'Tanggal berita harus diisi.',
+            'tanggal.date' => 'Tanggal berita harus berupa tanggal yang valid.',
+            'gambar.image' => 'Gambar harus berupa file gambar.',
+            'gambar.mimes' => 'Gambar harus berupa file dengan format: jpeg, png, jpg, gif, svg.',
+            'gambar.max' => 'Ukuran gambar tidak boleh lebih dari 2MB.',
+            'slug.unique' => 'Slug berita sudah digunakan. Silakan gunakan judul yang berbeda.',
         ]);
 
         $gambar = null;
@@ -40,6 +53,7 @@ class BeritaController extends Controller
         Berita::create([
             'id_berita' => Str::uuid(),
             'judul' => $request->judul,
+            'slug' =>$slug,
             'isi' => $request->isi,
             'tanggal' => $request->tanggal,
             'gambar' => $gambar,
@@ -76,7 +90,7 @@ class BeritaController extends Controller
         if ($request->hasFile('gambar')) {
             $gambar = $request->file('gambar')->store('berita', 'public');
             $berita->gambar = $gambar;
-        }   
+        }
 
         $berita->update([
             'judul' => $request->judul,

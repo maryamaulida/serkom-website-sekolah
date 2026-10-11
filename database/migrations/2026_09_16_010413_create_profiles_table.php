@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('profile', function (Blueprint $table) {
             $table->uuid('id_profile')->primary();
             $table->string('nama_sekolah');
-            $table->string('kepala_Sekolah');
+            $table->string('kepala_Sekolah');   
             $table->string('foto');
             $table->string('logo');
             $table->string('npsn');

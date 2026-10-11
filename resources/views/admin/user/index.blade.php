@@ -18,9 +18,11 @@
         </div>
 
         <a href="{{ route('admin.user.create') }}"
-            class="btn btn-primary">
+           class="btn btn-primary">
+
             <i class="ti ti-plus me-1"></i>
             Tambah User
+
         </a>
 
     </div>
@@ -30,13 +32,31 @@
     @if(session('success'))
 
         <div class="alert alert-success alert-dismissible fade show"
-            role="alert">
+             role="alert">
 
             {{ session('success') }}
 
             <button type="button"
-                class="btn-close"
-                data-bs-dismiss="alert">
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+
+    @endif
+
+
+    {{-- Alert Error --}}
+    @if(session('error'))
+
+        <div class="alert alert-danger alert-dismissible fade show"
+             role="alert">
+
+            {{ session('error') }}
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
             </button>
 
         </div>
@@ -49,9 +69,10 @@
 
         <div class="card-body">
 
-            {{-- Search --}}
+            {{-- Search & Filter --}}
             <div class="row mb-4">
 
+                {{-- Search --}}
                 <div class="col-md-6">
 
                     <label class="form-label">
@@ -59,20 +80,22 @@
                     </label>
 
                     <input type="text"
-                        id="searchUser"
-                        class="form-control"
-                        placeholder="Cari nama atau username...">
+                           id="searchUser"
+                           class="form-control"
+                           placeholder="Cari nama atau username...">
 
                 </div>
 
-                <div class="col-md-3">
+
+                {{-- Filter Role --}}
+                <div class="col-md-6">
 
                     <label class="form-label">
                         Filter Role
                     </label>
 
                     <select id="filterRole"
-                        class="form-select">
+                            class="form-select">
 
                         <option value="">
                             Semua Role
@@ -99,6 +122,7 @@
                 <table class="table align-middle">
 
                     <thead>
+
                         <tr>
 
                             <th width="60">
@@ -117,12 +141,18 @@
                                 Role
                             </th>
 
-                            <th width="100">
+                            <th class="text-center">
+                                Status
+                            </th>
+
+                            <th width="230" class="text-center">
                                 Aksi
                             </th>
 
                         </tr>
+
                     </thead>
+
 
                     <tbody id="userTable">
 
@@ -133,41 +163,48 @@
                                 data-username="{{ strtolower($user->username) }}"
                                 data-role="{{ $user->role }}">
 
+                                {{-- No --}}
                                 <td>
                                     {{ $loop->iteration }}
                                 </td>
 
+
+                                {{-- Nama --}}
                                 <td>
+
                                     <div class="d-flex align-items-center">
 
                                         <div class="rounded-circle bg-light-primary
                                                     d-flex align-items-center justify-content-center me-3"
-                                            style="width: 40px; height: 40px;">
+                                             style="width: 40px; height: 40px;">
 
                                             <i class="ti ti-user fs-5 text-primary"></i>
 
                                         </div>
 
                                         <div>
+
                                             <h6 class="mb-0 fw-semibold">
                                                 {{ $user->name }}
                                             </h6>
 
-                                            {{-- <small class="text-muted">
-                                                {{ $user->id_user }}
-                                            </small> --}}
                                         </div>
 
                                     </div>
+
                                 </td>
 
+
+                                {{-- Username --}}
                                 <td>
                                     {{ $user->username }}
                                 </td>
 
+
+                                {{-- Role --}}
                                 <td>
 
-                                    @if($user->role == 'Admin')
+                                    @if($user->role === 'Admin')
 
                                         <span class="badge bg-primary">
                                             Admin
@@ -183,69 +220,118 @@
 
                                 </td>
 
-                                <td>
 
-                                    <div class="dropdown">
+                                {{-- Status --}}
+                                <td class="text-center">
 
-                                        <button class="btn btn-sm btn-light"
-                                            type="button"
-                                            data-bs-toggle="dropdown">
+                                    @if($user->status === 'Aktif')
 
-                                            <i class="ti ti-dots-vertical"></i>
+                                        <span class="badge bg-success">
+                                            <i class="ti ti-circle-check me-1"></i>
+                                            Aktif
+                                        </span>
 
-                                        </button>
+                                    @else
 
-                                        <ul class="dropdown-menu dropdown-menu-end">
+                                        <span class="badge bg-danger">
+                                            <i class="ti ti-circle-x me-1"></i>
+                                            Nonaktif
+                                        </span>
 
-                                            {{-- Detail --}}
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('admin.user.show', $user->id_user) }}">
+                                    @endif
 
-                                                    <i class="ti ti-eye me-2"></i>
-                                                    Detail
+                                </td>
 
-                                                </a>
-                                            </li>
 
-                                            {{-- Edit --}}
-                                            <li>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('admin.user.edit', $user->id_user) }}">
+                                {{-- Aksi --}}
+                                <td class="text-center"
+                                    style="min-width: 230px;">
 
-                                                    <i class="ti ti-edit me-2"></i>
-                                                    Edit
+                                    <div class="d-flex justify-content-center align-items-center gap-2">
 
-                                                </a>
-                                            </li>
+                                        {{-- Detail --}}
+                                        <a href="{{ route('admin.user.show', $user->id_user) }}"
+                                           class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                                           style="width: 45px; height: 45px; background-color: #e8eef3;"
+                                           title="Detail">
 
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
+                                            <i class="ti ti-eye"></i>
 
-                                            {{-- Hapus --}}
-                                            <li>
+                                        </a>
 
-                                                <form action="{{ route('admin.user.destroy', $user->id_user) }}"
-                                                    method="POST"
-                                                    onsubmit="return confirm('Yakin ingin menghapus user ini?')">
 
-                                                    @csrf
-                                                    @method('DELETE')
+                                        {{-- Edit --}}
+                                        <a href="{{ route('admin.user.edit', $user->id_user) }}"
+                                           class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                                           style="width: 45px; height: 45px; background-color: #ffc66d;"
+                                           title="Edit">
 
-                                                    <button type="submit"
-                                                        class="dropdown-item text-danger">
+                                            <i class="ti ti-edit"></i>
 
-                                                        <i class="ti ti-trash me-2"></i>
-                                                        Hapus
+                                        </a>
 
-                                                    </button>
 
-                                                </form>
+                                        {{-- Aktif / Nonaktif --}}
+                                        <form action="{{ route('admin.user.toggle-status', $user->id_user) }}"
+                                              method="POST"
+                                              onsubmit="return confirm('{{ $user->status === 'Aktif'
+                                                  ? 'Yakin ingin menonaktifkan user ini?'
+                                                  : 'Yakin ingin mengaktifkan user ini?' }}')">
 
-                                            </li>
+                                            @csrf
+                                            @method('PATCH')
 
-                                        </ul>
+                                            @if($user->status === 'Aktif')
+
+                                                {{-- User sedang aktif --}}
+                                                <button type="submit"
+                                                        class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                                                        style="width: 45px; height: 45px; background-color: #8bd3a8;"
+                                                        title="Nonaktifkan">
+
+                                                    <i class="ti ti-user-check"></i>
+
+                                                </button>
+
+                                            @else
+
+                                                {{-- User sedang nonaktif --}}
+                                                <button type="submit"
+                                                        class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                                                        style="width: 45px; height: 45px; background-color: #ff927c;"
+                                                        title="Aktifkan">
+
+                                                    <i class="ti ti-user-off"></i>
+
+                                                </button>
+
+                                            @endif
+
+                                        </form>
+
+
+                                        {{-- Hapus --}}
+                                        @if($user->berita_count == 0 && $user->pengumuman_count == 0)
+
+                                            <form action="{{ route('admin.user.destroy', $user->id_user) }}"
+                                                  method="POST"
+                                                  onsubmit="return confirm('Yakin ingin menghapus user ini?')">
+
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit"
+                                                        class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                                                        style="width: 45px; height: 45px; background-color: #ff927c;"
+                                                        title="Hapus">
+
+                                                    <i class="ti ti-trash"></i>
+
+                                                </button>
+
+                                            </form>
+
+                                        @endif
 
                                     </div>
 
@@ -256,13 +342,14 @@
                         @empty
 
                             <tr>
-                                <td colspan="5"
+
+                                <td colspan="6"
                                     class="text-center py-5">
 
                                     <div class="mb-3">
 
                                         <i class="ti ti-users-group"
-                                            style="font-size: 50px; color: #adb5bd;">
+                                           style="font-size: 50px; color: #adb5bd;">
                                         </i>
 
                                     </div>
@@ -276,7 +363,7 @@
                                     </p>
 
                                     <a href="{{ route('admin.user.create') }}"
-                                        class="btn btn-primary">
+                                       class="btn btn-primary">
 
                                         <i class="ti ti-plus me-1"></i>
                                         Tambah User
@@ -284,6 +371,7 @@
                                     </a>
 
                                 </td>
+
                             </tr>
 
                         @endforelse
@@ -310,10 +398,10 @@
 
     function filterUser() {
 
-        const search = searchInput.value.toLowerCase();
+        const search = searchInput.value.toLowerCase().trim();
         const role = filterRole.value;
 
-        rows.forEach(row => {
+        rows.forEach(function(row) {
 
             const name = row.dataset.name;
             const username = row.dataset.username;

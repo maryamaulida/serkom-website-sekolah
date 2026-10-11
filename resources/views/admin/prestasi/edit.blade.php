@@ -63,7 +63,7 @@
 
                 @endif
 
-                <form action="{{ route('admin.prestasi.update', $prestasi->id) }}"
+                <form action="{{ route('admin.prestasi.update', $prestasi->id_prestasi) }}"
                       method="POST"
                       enctype="multipart/form-data">
 

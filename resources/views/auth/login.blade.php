@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Login - SMK YPC Tasikmalaya</title>
+    <title>SMPN 1 Puspahiang</title>
+    <link rel="shortcut icon"
+          type="image/png"
+          href="{{ asset('assets/images/logos/logo.png') }}">
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
@@ -260,7 +263,7 @@
             </h2>
 
             <p class="login-subtitle text-center mb-4">
-                Sistem Informasi SMK YPC Tasikmalaya
+                Sistem Informasi SMPN 1 Puspahiang
             </p>
 
             <!-- Error -->

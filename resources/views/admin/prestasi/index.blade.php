@@ -207,7 +207,7 @@
                                     <div class="d-flex justify-content-center gap-2">
 
                                         {{-- Detail --}}
-                                        <a href="{{ route('admin.prestasi.show', $prestasi->id) }}"
+                                        <a href="{{ route('admin.prestasi.show', $prestasi->id_prestasi) }}"
                                            class="btn btn-light"
                                            title="Detail">
 
@@ -217,7 +217,7 @@
 
 
                                         {{-- Edit --}}
-                                        <a href="{{ route('admin.prestasi.edit', $prestasi->id) }}"
+                                        <a href="{{ route('admin.prestasi.edit', $prestasi->id_prestasi) }}"
                                            class="btn btn-warning"
                                            title="Edit">
 
@@ -227,7 +227,7 @@
 
 
                                         {{-- Hapus --}}
-                                        <form action="{{ route('admin.prestasi.destroy', $prestasi->id) }}"
+                                        <form action="{{ route('admin.prestasi.destroy', $prestasi->id_prestasi) }}"
                                               method="POST"
                                               onsubmit="return confirm('Yakin ingin menghapus prestasi ini?')">
 

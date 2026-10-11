@@ -2,6 +2,7 @@
 
 @section('content')
 
+<div class="container-fluid">
 <div class="mb-4">
     <h4 class="fw-semibold mb-1">Dashboard</h4>
     <p class="fs-3 text-muted mb-0">
@@ -779,5 +780,7 @@
     </div>
 
 </div>
+</div>
+
 
 @endsection

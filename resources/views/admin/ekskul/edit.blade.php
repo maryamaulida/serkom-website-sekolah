@@ -77,7 +77,7 @@
 
             <div class="card-body p-4">
 
-                <form action="{{ route('admin.ekskul.update', $ekskul->id) }}"
+                <form action="{{ route('admin.ekskul.update', $ekskul->id_ekskul) }}"
                       method="POST"
                       enctype="multipart/form-data">
 

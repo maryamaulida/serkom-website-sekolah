@@ -18,6 +18,7 @@ class Berita extends Model
         'id_berita',
         'judul',
         'isi',
+        'slug',
         'tanggal',
         'gambar',
         'status',
