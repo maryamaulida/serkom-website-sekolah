@@ -25,7 +25,20 @@ class DatabaseSeeder extends Seeder
             'status' => 'Aktif',
         ]);
 
+        $this->call([
+            UserSeeder::class,
+            ProfileSeeder::class,
+            GuruSeeder::class,
+            SiswaSeeder::class,
+            BeritaSeeder::class,
+            PengumumanSeeder::class,
+            PrestasiSeeder::class,
+            EkskulSeeder::class,
+            GaleriSeeder::class,
+            DashboardSeeder::class,
+        ]);
 
-       
+
+
     }
 }

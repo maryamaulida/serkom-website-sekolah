@@ -17,8 +17,8 @@ class LandingController extends Controller
 {
     public function index()
     {
-       $beritas = Berita::latest()->take(2)->get();
-       $pengumumans = Pengumuman::latest()->take(4)->get();
+       $beritas = Berita::where('status', 'Publish')->latest()->take(2)->get();
+       $pengumumans = Pengumuman::where('status', 'Publish')->latest()->take(4)->get();
        $gurus = Guru::all();
        $prestasis = Prestasi::all();
        $ekskul = Ekskul::all();
@@ -47,13 +47,13 @@ class LandingController extends Controller
     }
 
     public function berita(){
-        $beritas = Berita::latest()->get();
+        $beritas = Berita::where('status', 'Publish')->latest()->get();
         return view('landing.berita.index', compact('beritas'));
     }
 
     public function beritaDetail($slug)
     {
-        $berita = Berita::where('slug', $slug)->firstOrFail();
+        $berita = Berita::where('slug', $slug)->where('status', 'Publish')->firstOrFail();
 
         return view('landing.berita.detail', compact('berita'));
     }
@@ -89,7 +89,7 @@ class LandingController extends Controller
     }
 
     public function pengumuman(){
-        $pengumumans = Pengumuman::latest()->get();
+        $pengumumans = Pengumuman::where('status', 'Publish')->latest()->get();
         return view('landing.pengumuman.index', compact('pengumumans'));
     }
 

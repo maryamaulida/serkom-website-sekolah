@@ -23,6 +23,7 @@ class Berita extends Model
         'gambar',
         'status',
         'id_user',
+        'created_by'
     ];
     public function user()
     {

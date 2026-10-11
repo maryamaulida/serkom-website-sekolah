@@ -29,7 +29,7 @@
 
                 </div>
 
-    
+
             </div>
 
         </div>
@@ -104,7 +104,7 @@
 
 
                                 {{-- DETAIL --}}
-                                <a href="{{ route('landing.berita.detail', $berita->id_berita) }}"
+                                <a href="{{ route('landing.berita.detail', $berita->slug) }}"
                                    class="text-primary text-decoration-none fw-semibold mt-auto">
 
                                     Baca Selengkapnya
