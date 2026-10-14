@@ -108,5 +108,9 @@ class LandingController extends Controller
         return view('landing.eskul.detail', compact('eskul'));
     }
 
+    public function nilai(){
+        return view('landing.nilai');
+    }
+
 
 }

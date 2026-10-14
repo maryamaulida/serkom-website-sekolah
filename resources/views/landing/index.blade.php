@@ -23,16 +23,6 @@
                         {{ $profile->deskripsi ?? 'SMA Airlangga berkomitmen memberikan pendidikan berkualitas untuk membentuk generasi yang unggul, berkarakter, dan berprestasi.' }}
                     </p>
 
-                    {{-- <div class="mt-4">
-                        <a href="#profil" class="btn btn-outline-warning btn-lg px-4 me-2">
-                            Kenali Sekolah
-                        </a>
-
-                        <a href="#program" class="btn btn-outline-light btn-lg px-4">
-                            Program Sekolah →
-                        </a>
-                    </div> --}}
-
                 </div>
             </div>
         </div>
@@ -43,7 +33,6 @@
     <div class="card-kecil mb-5" data-aos="fade-up">
         <div class="container">
 
-            <div class="card-kecil-box">
                 <div class="row justify-content-between">
 
                     <div class="col-md-3 card-kecil-item">
@@ -74,7 +63,6 @@
                     </div>
 
                 </div>
-            </div>
 
         </div>
     </div>
@@ -173,9 +161,6 @@
                         </h5>
                         <a href="{{ route('landing.pengumuman.index') }}" class="text-warning text-pengumuman fw-semibold">Lihat Semua -></a>
                         </div>
-
-
-
                         <hr class="text-secondary">
 
                         @foreach ($pengumumans as $pengumuman)
@@ -246,6 +231,7 @@
                 </div>
 
                 <div class="swiper-pagination"></div>
+
             </div>
 
         </div>
@@ -256,7 +242,7 @@
 
             <div class="text-center p-5">
                 <h6 class="text-warning mb-0-auto">Kebanggaan Sekolah</h6>
-                <h3 class="fw-bold text-dark mt-o-auto">Prestasi Siswa & Sekolah</h3>
+                <h3 class="fw-bold text-dark mt-0-auto">Prestasi Siswa & Sekolah</h3>
                 <p class="card-text text-secondary">
                     Bukti nyata komitmen kami dalam membimbing talenta unggul di bidang akademik maupun non-akademik.
                 </p>
@@ -267,7 +253,7 @@
 
                     @foreach ($prestasis as $prestasi)
                         <div class="swiper-slide">
-                            <div class="card card-prestasi h-100">
+                            <div class="card card-prestasi">
                                 <img
                                     src="{{ asset('storage/' . $prestasi->foto) }}"
                                     class="card-image text-white"

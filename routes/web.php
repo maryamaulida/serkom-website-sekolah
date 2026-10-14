@@ -12,6 +12,7 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LandingController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 // ==================================================
 
 Route::get('/login', [LoginController::class, 'showLogin'])
-    ->name('login');
+    ->name('auth.login');
 
 Route::post('/login', [LoginController::class, 'login'])
     ->name('login.process');
@@ -28,13 +29,19 @@ Route::post('/login', [LoginController::class, 'login'])
 Route::post('/logout', [LoginController::class, 'logout'])
     ->name('logout');
 
+Route::get('/nilai', function () {
+    return view('nilai');
+});
+
+
+
 
 // ==================================================
 // HALAMAN AWAL
 // ==================================================
 
 Route::get('/', [LandingController::class, 'index'])
-    ->name('landing.index');
+->name('landing.index');
 
 Route::get('/profile-sekolah', [LandingController::class, 'profile'])->name('landing.profile');
 
@@ -44,7 +51,7 @@ Route::get('/berita/{slug}', [LandingController::class, 'beritaDetail'])->name('
 
 // GURU
 Route::get('guru-sekolah', [LandingController::class, 'guru'])->name('landing.guru.index');
-Route::get('/guru/{id}', [LandingController::class, 'guruDetail'])->name('landing.guru.detail');
+Route::get('/guru-sekolah/{id}', [LandingController::class, 'guruDetail'])->name('landing.guru.detail');
 
 Route::get('prestasi-sekolah', [LandingController::class, 'prestasi'])->name('landing.prestasi.index');
 Route::get('/prestasi{id}', [LandingController::class, 'detailPrestasi'])->name('landing.prestasi.detail');
@@ -57,6 +64,16 @@ Route::get('/pengumuman{id}', [LandingController::class, 'detailPengumuman'])->n
 
 Route::get('eskul-sekolah', [LandingController::class, 'eskul'])->name('landing.eskul.index');
 Route::get('/eskul/{id}', [LandingController::class, 'detailEskul'])->name('landing.eskul.detail');
+
+Route::get('/ujikom', [LandingController::class, 'nilai'])->name('landing.nilai');
+
+Route::post('/ujikom', function (Request $request) {
+    $nilai1 = $request->nilai1;
+    $nilai2 = $request->nilai2;
+    $nilai3 = $request->nilai3;
+    $rataNilai = ($nilai1 + $nilai2 + $nilai3 ) / 3;
+    return view('landing.nilai', compact('rataNilai'));
+})->name('nilai.hitung');
 
 // ==================================================
 // MY PROFILE
@@ -196,72 +213,41 @@ Route::delete('/siswa/{siswa}', [SiswaController::class, 'destroy'])
 // Hanya Admin
 // ==================================================
 
-Route::resource('user', UserController::class)
-    ->parameters([
-        'user' => 'user',
-    ])
-    ->names('admin.user')
-    ->middleware([
-        'auth.custom',
-        'role:Admin',
-    ]);
+Route::resource('user', UserController::class)->parameters(['user' => 'user'])->names('admin.user')->middleware(['auth.custom','role:Admin']);
 
-Route::patch('/user/{user}/toggle-status', [UserController::class, 'toggleStatus'])
-    ->middleware(['auth.custom', 'role:Admin'])
-    ->name('admin.user.toggle-status');
+Route::patch('/user/{user}/toggle-status', [UserController::class, 'toggleStatus'])->middleware(['auth.custom', 'role:Admin'])->name('admin.user.toggle-status');
 
 
 // ==================================================
 // BERITA
 // ==================================================
 
-Route::resource('/admin/berita', BeritaController::class)
-    ->parameters([
-        'berita' => 'berita',
-    ])
-    ->names('admin.berita')->middleware(['auth.custom', 'role:Admin,Operator']);
+Route::resource('/admin/berita', BeritaController::class)->parameters(['berita' => 'berita',])->names('admin.berita')->middleware(['auth.custom', 'role:Admin,Operator']);
 
 
 // ==================================================
 // EKSKUL
 // ==================================================
 
-Route::resource('/admin/ekskul', EkskulController::class)
-    ->parameters([
-        'ekskul' => 'ekskul',
-    ])
-    ->names('admin.ekskul')->middleware(['auth.custom', 'role:Admin,Operator']);
+Route::resource('/admin/ekskul', EkskulController::class)->parameters(['ekskul' => 'ekskul'])->names('admin.ekskul')->middleware(['auth.custom', 'role:Admin,Operator']);
 
 
 // ==================================================
 // GALERI
 // ==================================================
 
-Route::resource('/admin/galeri', GaleriController::class)
-    ->parameters([
-        'galeri' => 'galeri',
-    ])
-    ->names('admin.galeri')->middleware(['auth.custom', 'role:Admin,Operator']);
+Route::resource('/admin/galeri', GaleriController::class)->parameters(['galeri' => 'galeri',])->names('admin.galeri')->middleware(['auth.custom', 'role:Admin,Operator']);
 
 
 // ==================================================
 // PRESTASI
 // ==================================================
 
-Route::resource('/admin/prestasi', PrestasiController::class)
-    ->parameters([
-        'prestasi' => 'prestasi',
-    ])
-    ->names('admin.prestasi')->middleware(['auth.custom', 'role:Admin,Operator']);
+Route::resource('/admin/prestasi', PrestasiController::class)->parameters(['prestasi' => 'prestasi'])->names('admin.prestasi')->middleware(['auth.custom', 'role:Admin,Operator']);
 
 
 // ==================================================
 // PENGUMUMAN
 // ==================================================
 
-Route::resource('/admin/pengumuman', PengumumanController::class)
-    ->parameters([
-        'pengumuman' => 'pengumuman',
-    ])
-    ->names('admin.pengumuman')
-    ->middleware(['auth.custom', 'role:Admin,Operator']);
+Route::resource('/admin/pengumuman', PengumumanController::class)->parameters(['pengumuman' => 'pengumuman'])->names('admin.pengumuman')->middleware(['auth.custom', 'role:Admin,Operator']);

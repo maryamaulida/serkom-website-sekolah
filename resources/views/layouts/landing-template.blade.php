@@ -59,9 +59,7 @@
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#navbarNav"
-                aria-controls="navbarNav"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
+                >
 
                 <span class="navbar-toggler-icon"></span>
 
@@ -127,6 +125,7 @@
                     </li>
 
 
+
                     {{-- Informasi --}}
                     <li class="nav-item dropdown">
 
@@ -160,6 +159,18 @@
 
                         </ul>
 
+                    </li>
+
+                    <a href="{{ route('auth.login') }}" class="btn btn-primary text-white ms-2 px-3 py-2">
+                    Login
+                    </a>
+
+                    {{-- Barang --}}
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('landing.nilai') ? 'active' : '' }}"
+                         href="{{ route('landing.nilai') }}">
+                            Ujikom
+                        </a>
                     </li>
 
                 </ul>
